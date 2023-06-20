@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
+use App\Models\EventStatus;
 
 class Event extends Model
 {
@@ -11,12 +14,32 @@ class Event extends Model
 
     protected $fillable = [
         'user_id', 
-        'title', 
-        'description', 
+        'title',
+        'description',
         'place',
         'localization',
-        'start', 
+        'start',
         'end'
     ];
+
+    protected $casts = [
+        'start' => 'datetime',
+        'end' => 'datetime'
+    ];
+
+    protected $dates = [
+        'start',
+        'end'
+    ];
+
+    public function users () 
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function eventStatus () 
+    {
+        return $this->belongsTo(EventStatus::class);
+    }
     
 }

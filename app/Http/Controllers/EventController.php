@@ -1,10 +1,9 @@
-
-
 <?php
 
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\EventResource;
 use App\Models\Event;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -17,12 +16,16 @@ class EventController extends Controller
      */
     public function index(Event $event)
     {
-        return response()->json([
-            QueryBuilder::for(Event::class)
-            ->allowedFilters('status')
-            ->allowedSorts(['id', 'start'])
-            ->paginate(10)
-        ]);
+        // $query = $event->all();
+        // dd($query->toSql());
+        return $event->with('event_status')->get();
+        
+        // QueryBuilder::for(Event::class)
+        // ->allowedFilters('status')
+        // ->allowedSorts(['id', 'start'])
+        // ->where('user_id', auth()->user()->id)
+        // ->paginate(10);
+        
     }
 
     /**
