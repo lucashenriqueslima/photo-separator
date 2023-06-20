@@ -1,18 +1,28 @@
+
+
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Event;
 use Illuminate\Http\Request;
+use Spatie\QueryBuilder\QueryBuilder;
 
-class EventsController extends Controller
+
+class EventController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Event $event)
     {
-        //
+        return response()->json([
+            QueryBuilder::for(Event::class)
+            ->allowedFilters('status')
+            ->allowedSorts(['id', 'start'])
+            ->paginate(10)
+        ]);
     }
 
     /**
