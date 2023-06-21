@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('events', function (Blueprint $table) {
             $table->foreignId('event_status_id')->default(1)->after('user_id');
-            $table->foreign('event_status_id')->references('id')->on('event_status');
+            $table->foreign('event_status_id')->references('id')->on('event_statuses');
         });
     }
 

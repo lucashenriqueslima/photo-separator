@@ -12,6 +12,10 @@ class Event extends Model
 {
     use HasFactory;
 
+    public const STATUS_WAITING = 1;
+    public const STATUS_HAPPENED = 2;
+    public const STATUS_CANCELED = 3;
+
     protected $fillable = [
         'user_id', 
         'title',
@@ -37,7 +41,7 @@ class Event extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function eventStatus () 
+    public function eventStatuses () 
     {
         return $this->belongsTo(EventStatus::class);
     }

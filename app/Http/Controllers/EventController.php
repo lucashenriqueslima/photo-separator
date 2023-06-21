@@ -16,15 +16,19 @@ class EventController extends Controller
      */
     public function index(Event $event)
     {
-        // $query = $event->all();
-        // dd($query->toSql());
-        return $event->with('event_status')->get();
+
+        return EventResource::collection(
+            QueryBuilder::for(Event::class)
+            ->allowedFilters('status')
+            ->allowedSorts(['id', 'start', 'status'])
+            ->with('eventStatuses')
+            ->where(['user_id', auth()->user()->id,
+            'status', '!=', Event::STATUS_CANCELED
+            ])
+            ->paginate(10)
+        );
         
-        // QueryBuilder::for(Event::class)
-        // ->allowedFilters('status')
-        // ->allowedSorts(['id', 'start'])
-        // ->where('user_id', auth()->user()->id)
-        // ->paginate(10);
+
         
     }
 

@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\EventStatus;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\EventStatus;
 
 class EventStatusSeed extends Seeder
 {

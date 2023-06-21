@@ -22,16 +22,16 @@ use App\Http\Controllers\EventController;
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::apiResources([
-        'users' => UserController::class,
-        'events' => EventController::class,
+        'users' => App\Http\Controllers\UserController::class,
+        'events' => App\Http\Controllers\EventController::class,
     ]);
 
 });
 
 Route::prefix('auth')->group(function() {
-    Route::post('/login', [LoginController::class, 'login']);
+    Route::post('/login', [App\Http\Controllers\LoginController::class, 'login']);
     
-    Route::post('/register', [RegisterController::class, 'register']);
+    Route::post('/register', [App\Http\Controllers\RegisterController::class, 'register']);
     
-    Route::post('/logout', [LogoutController::class, 'logout'])->middleware('auth:sanctum');
+    Route::post('/logout', [App\Http\Controllers\LogoutController::class, 'logout'])->middleware('auth:sanctum');
 });
