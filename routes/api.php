@@ -29,9 +29,9 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::prefix('auth')->group(function() {
-    Route::post('/login', [App\Http\Controllers\LoginController::class, 'login']);
+    Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login']);
     
-    Route::post('/register', [App\Http\Controllers\RegisterController::class, 'register']);
+    Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class, 'register']);
     
-    Route::post('/logout', [App\Http\Controllers\LogoutController::class, 'logout'])->middleware('auth:sanctum');
+    Route::post('/logout', [App\Http\Controllers\Auth\LogoutController::class, 'logout'])->middleware('auth:sanctum');
 });
