@@ -10,12 +10,11 @@ class LoginController extends Controller
     public function login(LoginRequest $request)
     {
 
-        if(!auth()->attempt($request->validated())) {
+        if (!auth()->attempt($request->validated())) {
 
             return response()->json([
                 'message' => 'Email ou senha inválido(s).'
             ], 401);
-
         }
 
         $token = auth()->user()->createToken('user_token');

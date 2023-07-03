@@ -19,17 +19,16 @@ class EventController extends Controller
 
         return EventResource::collection(
             QueryBuilder::for(Event::class)
-            ->allowedFilters('status')
-            ->allowedSorts(['id', 'start', 'status'])
-            ->with('eventStatuses')
-            ->where(['user_id', auth()->user()->id,
-            'status', '!=', Event::STATUS_CANCELED
-            ])
-            ->paginate(10)
+                ->allowedFilters('status')
+                ->allowedSorts(['id', 'start', 'status'])
+                ->with('eventStatuses')
+                ->where(
+                    'user_id',
+                    auth()->user()->id,
+                )
+                ->orderBy('event_status_id', 'desc')
+                ->paginate(10)
         );
-        
-
-        
     }
 
     /**

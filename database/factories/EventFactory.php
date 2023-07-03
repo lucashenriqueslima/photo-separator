@@ -17,7 +17,7 @@ class EventFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => $this->faker->numberBetween(1, 10),
+            'client_id' => $this->faker->numberBetween(1, 2),
             'event_status_id' => $this->faker->numberBetween(1, 3),
             'title' => $this->faker->sentence(3),
             'description' => $this->faker->paragraph(3),
