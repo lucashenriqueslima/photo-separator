@@ -18,15 +18,10 @@ class EventController extends Controller
     {
 
         return EventResource::collection(
-            QueryBuilder::for(Event::class)
-                ->allowedFilters('status')
-                ->allowedSorts(['id', 'start', 'status'])
-                ->with('eventStatuses')
-                ->where(
-                    'user_id',
-                    auth()->user()->id,
-                )
-                ->orderBy('event_status_id', 'desc')
+            Event::where(
+                'client_id',
+                auth()->user()->client_id,
+            )
                 ->paginate(10)
         );
     }

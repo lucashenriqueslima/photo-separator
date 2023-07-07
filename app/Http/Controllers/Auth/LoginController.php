@@ -10,6 +10,8 @@ class LoginController extends Controller
     public function login(LoginRequest $request)
     {
 
+        #TODO: create a ApiResource for User Model
+
         if (!auth()->attempt($request->validated())) {
 
             return response()->json([

@@ -17,7 +17,7 @@ class Event extends Model
     public const STATUS_CANCELED = 3;
 
     protected $fillable = [
-        'user_id',
+        'client_id',
         'title',
         'description',
         'place',
@@ -36,12 +36,12 @@ class Event extends Model
         'end'
     ];
 
-    public function clients()
+    public function client()
     {
-        return $this->belongsTo(Client::class);
+        return $this->hasOne(Client::class);
     }
 
-    public function eventStatuses()
+    public function eventStatus()
     {
         return $this->belongsTo(EventStatus::class);
     }

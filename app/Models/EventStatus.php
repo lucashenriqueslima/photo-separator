@@ -15,10 +15,9 @@ class EventStatus extends Model
     protected $fillable = [
         'title',
     ];
-    
-    public function events () 
+
+    public function events()
     {
         return $this->hasMany(Event::class);
     }
-
 }

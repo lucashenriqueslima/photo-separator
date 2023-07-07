@@ -17,13 +17,13 @@ class EventResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'status' => $this->eventStatuses->title,
+            'status' => $this->eventStatus->title,
             'title' => $this->title,
             'description' => $this->description,
             'place' => $this->place,
             'localization' => $this->localization,
-            'start' =>$this->start->format('d/m/Y h:i'),
-            'end' =>$this->end->format('d/m/Y h:i')
+            'start' => $this->start->format('d/m/Y h:i'),
+            'end' => $this->end->format('d/m/Y h:i')
         ];
     }
 }
