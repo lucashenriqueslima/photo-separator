@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\EventResource;
+use App\Http\Resources\EventIndexResource;
+use App\Http\Resources\EventShowResource;
 use App\Models\Event;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
-use Spatie\QueryBuilder\QueryBuilder;
-
+use Illuminate\Support\Facades\Auth;
 
 class EventController extends Controller
 {
@@ -17,12 +18,12 @@ class EventController extends Controller
     public function index(Event $event)
     {
 
-        return EventResource::collection(
+        return EventIndexResource::collection(
             Event::where(
                 'client_id',
                 auth()->user()->client_id,
             )
-                ->paginate(10)
+                ->get()
         );
     }
 
@@ -39,7 +40,15 @@ class EventController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $event = Event::findOrFail($id);
+
+        if ($event->client_id !== auth()->user()->client_id) {
+            return response()->json([
+                'message' => 'Ação não autorizada.'
+            ], 403);
+        }
+
+        return EventShowResource::make($event);
     }
 
     /**
