@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\EventStatus;
+use App\Models\Scopes\ClientScope;
 
 class Event extends Model
 {
@@ -35,6 +36,11 @@ class Event extends Model
         'start',
         'end'
     ];
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new ClientScope());
+    }
 
     public function client()
     {

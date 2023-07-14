@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
             // UserSeeder::class,
             // EventStatusSeed::class,
 
-            EventSeeder::class,
+            // EventSeeder::class,
         ]);
     }
 }

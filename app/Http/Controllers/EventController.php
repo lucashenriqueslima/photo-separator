@@ -17,13 +17,8 @@ class EventController extends Controller
      */
     public function index(Event $event)
     {
-
         return EventIndexResource::collection(
-            Event::where(
-                'client_id',
-                auth()->user()->client_id,
-            )
-                ->get()
+            Event::with('eventStatus')->get()
         );
     }
 
@@ -40,13 +35,8 @@ class EventController extends Controller
      */
     public function show(string $id)
     {
-        $event = Event::findOrFail($id);
-
-        if ($event->client_id !== auth()->user()->client_id) {
-            return response()->json([
-                'message' => 'Ação não autorizada.'
-            ], 403);
-        }
+        $event = Event::with('eventStatus')
+            ->findOrFail($id);
 
         return EventShowResource::make($event);
     }
