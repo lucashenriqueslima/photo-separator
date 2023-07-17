@@ -26,12 +26,17 @@ Route::middleware('auth:sanctum')->group(function () {
         'events' => App\Http\Controllers\EventController::class,
     ]);
 
+    Route::prefix('events')->group(function () {
+        Route::get('/{event}/identifications', [App\Http\Controllers\IndentificationController::class, 'index']);
+        Route::post('/{event}/identifications', [App\Http\Controllers\IndentificationController::class, 'store']);
+        Route::delete('/{event}/identifications/{identification}', [App\Http\Controllers\IndentificationController::class, 'destroy']);
+    });
 });
 
-Route::prefix('auth')->group(function() {
+Route::prefix('auth')->group(function () {
     Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login']);
-    
+
     Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class, 'register']);
-    
+
     Route::post('/logout', [App\Http\Controllers\Auth\LogoutController::class, 'logout'])->middleware('auth:sanctum');
 });

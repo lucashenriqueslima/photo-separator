@@ -16,6 +16,7 @@ class Indentification extends Model
         'name',
         'email',
         'phone',
+        'image_path',
     ];
 
     protected static function booted()
