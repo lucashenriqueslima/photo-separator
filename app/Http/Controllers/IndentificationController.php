@@ -21,7 +21,6 @@ class IndentificationController extends Controller
      */
     public function store(StoreIndentificationRequest $request)
     {
-        //
     }
 
     /**
