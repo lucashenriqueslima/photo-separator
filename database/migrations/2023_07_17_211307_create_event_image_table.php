@@ -19,9 +19,8 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('encrypted_name')->nullable();
             $table->string('path')->nullable();
-            $table->int('size')->nullable();
+            $table->decimal('size', 2, 2)->nullable();
             $table->decimal('price', 8, 2)->nullable();
-
             $table->timestamps();
         });
     }

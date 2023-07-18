@@ -22,16 +22,22 @@ class EventImageController extends Controller
     {
         $requestBody = $request->validated();
 
+        $uploadedFile = $request->file('image');
+
+        if (!$uploadedFile->isValid()) {
+            return response()->json([
+                'message' => 'Arquivo inválido.'
+            ], 400);
+        }
+
         try {
-            $s3Service->upload($request->file('image'), 'event-images');
+            $s3Service->upload($uploadedFile, 'event-images');
         } catch (\Exception $e) {
 
             return response()->json([
                 'message' => $e->getMessage()
             ], 500);
         }
-
-        $requestBody->status = EventImage::STATUS_UPLOADED;
 
         $eventImage->create($requestBody);
 
