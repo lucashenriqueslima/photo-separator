@@ -22,7 +22,8 @@ class StoreEventImageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'event_id' => ['required', 'exists:events,id'],
+            'image' => ['required', 'image', 'max:20480', 'mimes:jpeg,jpg,png'],
         ];
     }
 }

@@ -9,9 +9,7 @@ use App\Services\S3Service;
 
 class EventImageController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         //
@@ -22,9 +20,22 @@ class EventImageController extends Controller
      */
     public function store(StoreEventImageRequest $request, EventImage $eventImage, S3Service $s3Service)
     {
-        $s3Service->upload($request->file('image'), 'events/' . $request->event_id . '/images');
+        $requestBody = $request->validated();
 
-        $eventImage->create($request->validated());
+        try {
+            $s3Service->upload($request->file('image'), 'event-images');
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
+        }
+
+        $requestBody->status = EventImage::STATUS_UPLOADED;
+
+        $eventImage->create($requestBody);
+
+        return response()->json(201);
     }
 
     /**

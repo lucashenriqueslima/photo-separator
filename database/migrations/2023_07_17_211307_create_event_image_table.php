@@ -11,16 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('indentifications', function (Blueprint $table) {
+        Schema::create('event_image', function (Blueprint $table) {
             $table->id();
             $table->foreignId('event_id')->constrained();
-            $table->string('indentifier')->nullable();
+            $table->string('status')->nullable()->default('Carregado');
+            $table->string('error_message')->nullable();
             $table->string('name')->nullable();
-            $table->string('email')->nullable();
-            $table->string('phone')->nullable();
-            $table->string('image_name')->nullable();
-            $table->string('image_encrypted_name')->nullable();
-            $table->string('image_path')->nullable();
+            $table->string('encrypted_name')->nullable();
+            $table->string('path')->nullable();
+            $table->int('size')->nullable();
+            $table->decimal('price', 8, 2)->nullable();
+
             $table->timestamps();
         });
     }
@@ -34,6 +35,6 @@ return new class extends Migration
             $table->dropForeign(['event_id']);
         });
 
-        Schema::dropIfExists('indentifications');
+        Schema::dropIfExists('event_image');
     }
 };

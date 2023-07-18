@@ -10,13 +10,13 @@ class S3Service
 
     public function upload($file, $path)
     {
-        try {
-            $path = Storage::disk('s3')->put($path, $file, 'public');
-        } catch (S3Exception $e) {
-            return response()->json(['error' => 'Erro ao fazer upload do arquivo: ' . $e->getMessage()], 500);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Ocorreu um erro desconhecido: ' . $e->getMessage()], 500);
+        $result = Storage::disk('s3')->put($path, $file, 'public');
+
+        if (!$result) {
+            throw new \Exception('Erro ao fazer upload de arquivo.');
         }
+
+        return $result;
     }
 
     public function makeDirectory($path)
