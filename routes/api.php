@@ -27,9 +27,14 @@ Route::middleware('auth:sanctum')->group(function () {
     ]);
 
     Route::prefix('events')->group(function () {
-        Route::get('/{event}/identifications', [App\Http\Controllers\IndentificationController::class, 'index']);
-        Route::post('/{event}/identifications', [App\Http\Controllers\IndentificationController::class, 'store']);
-        Route::delete('/{event}/identifications/{identification}', [App\Http\Controllers\IndentificationController::class, 'destroy']);
+        Route::get('/{event_id}/images', [App\Http\Controllers\EventImageController::class, 'index']);
+        Route::post('/{event_id}/images', [App\Http\Controllers\EventImageController::class, 'store']);
+        Route::delete('/{event_id}/images/{id}', [App\Http\Controllers\EventImageController::class, 'destroy']);
+
+
+        Route::get('/{event_id}/identifications', [App\Http\Controllers\EventIndentificationController::class, 'index']);
+        Route::post('/{event_id}/identifications', [App\Http\Controllers\EventIndentificationController::class, 'store']);
+        Route::delete('/{event_id}/identifications/{id}', [App\Http\Controllers\EventIndentificationController::class, 'destroy']);
     });
 });
 

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Scopes\ClientScope;
 
-class Indentification extends Model
+class EventIndentification extends Model
 {
     use HasFactory;
 
