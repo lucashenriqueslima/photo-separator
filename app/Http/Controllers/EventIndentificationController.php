@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreEventIndentificationRequest;
-use App\Http\Requests\UpdateEventIndentificationRequest;
-use App\Models\EventIndentification;
+use App\Http\Requests\StoreIdentificationRequest;
+use App\Http\Requests\UpdateIdentificationRequest;
+use App\Models\Identification;
 
-class EventIndentificationController extends Controller
+class IdentificationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,14 +19,14 @@ class EventIndentificationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreEventIndentificationRequest $request)
+    public function store(StoreIdentificationRequest $request)
     {
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(EventIndentification $indentification)
+    public function show(Identification $indentification)
     {
         //
     }
@@ -34,7 +34,7 @@ class EventIndentificationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateEventIndentificationRequest $request, EventIndentification $indentification)
+    public function update(UpdateIdentificationRequest $request, Identification $indentification)
     {
         //
     }
@@ -42,7 +42,7 @@ class EventIndentificationController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(EventIndentification $indentification)
+    public function destroy(Identification $indentification)
     {
         //
     }

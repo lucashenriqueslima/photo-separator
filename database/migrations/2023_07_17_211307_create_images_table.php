@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('event_image', function (Blueprint $table) {
+        Schema::create('images', function (Blueprint $table) {
             $table->id();
             $table->foreignId('event_id')->constrained();
             $table->string('status')->nullable()->default('Carregado');
@@ -34,6 +34,6 @@ return new class extends Migration
             $table->dropForeign(['event_id']);
         });
 
-        Schema::dropIfExists('event_image');
+        Schema::dropIfExists('images');
     }
 };

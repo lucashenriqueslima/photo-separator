@@ -2,11 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\IdentificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,20 +19,27 @@ use App\Http\Controllers\EventController;
 
 Route::middleware('auth:sanctum')->group(function () {
 
-    Route::apiResources([
-        'users' => App\Http\Controllers\UserController::class,
-        'events' => App\Http\Controllers\EventController::class,
-    ]);
+    Route::apiResource('users', UserController::class)->only(['index', 'show', 'update', 'destroy']);
+
+    Route::apiResource('events', EventController::class);
+
+    Route::apiResource('events/{event_id}/identifications', IdentificationController::class);
+
+    Route::apiResource('events/{event_id}/images', ImageController::class);
+
+
+
+
 
     Route::prefix('events')->group(function () {
-        Route::get('/{event_id}/images', [App\Http\Controllers\EventImageController::class, 'index']);
-        Route::post('/{event_id}/images', [App\Http\Controllers\EventImageController::class, 'store']);
-        Route::delete('/{event_id}/images/{id}', [App\Http\Controllers\EventImageController::class, 'destroy']);
+        Route::get('/{event_id}/images', [App\Http\Controllers\ImageController::class, 'index']);
+        Route::post('/{event_id}/images', [App\Http\Controllers\ImageController::class, 'store']);
+        Route::delete('/{event_id}/images/{id}', [App\Http\Controllers\ImageController::class, 'destroy']);
 
 
-        Route::get('/{event_id}/identifications', [App\Http\Controllers\EventIndentificationController::class, 'index']);
-        Route::post('/{event_id}/identifications', [App\Http\Controllers\EventIndentificationController::class, 'store']);
-        Route::delete('/{event_id}/identifications/{id}', [App\Http\Controllers\EventIndentificationController::class, 'destroy']);
+        Route::get('/{event_id}/identifications', [App\Http\Controllers\IdentificationController::class, 'index']);
+        Route::post('/{event_id}/identifications', [App\Http\Controllers\IdentificationController::class, 'store']);
+        Route::delete('/{event_id}/identifications/{id}', [App\Http\Controllers\IdentificationController::class, 'destroy']);
     });
 });
 

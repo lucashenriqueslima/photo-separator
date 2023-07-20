@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreEventImageRequest;
-use App\Http\Requests\UpdateEventImageRequest;
-use App\Models\EventImage;
+use App\Http\Requests\StoreImageRequest;
+use App\Http\Requests\UpdateImageRequest;
+use App\Models\Image;
 use App\Services\S3Service;
 
-class EventImageController extends Controller
+class ImageController extends Controller
 {
 
     public function index()
@@ -18,7 +18,7 @@ class EventImageController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreEventImageRequest $request, EventImage $eventImage, S3Service $s3Service)
+    public function store(StoreImageRequest $request, Image $image, S3Service $s3Service)
     {
         $requestBody = $request->validated();
 
@@ -39,7 +39,7 @@ class EventImageController extends Controller
             ], 500);
         }
 
-        $eventImage->create($requestBody);
+        $image->create($requestBody);
 
         return response()->json(201);
     }
@@ -47,7 +47,7 @@ class EventImageController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(EventImage $eventImage)
+    public function show(Image $image)
     {
         //
     }
@@ -55,7 +55,7 @@ class EventImageController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateEventImageRequest $request, EventImage $eventImage)
+    public function update(UpdateImageRequest $request, Image $image)
     {
         //
     }
@@ -63,7 +63,7 @@ class EventImageController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(EventImage $eventImage)
+    public function destroy(Image $image)
     {
         //
     }

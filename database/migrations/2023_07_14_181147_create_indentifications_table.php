@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('event_indentifications', function (Blueprint $table) {
+        Schema::create('indentifications', function (Blueprint $table) {
             $table->id();
             $table->foreignId('event_id')->constrained();
             $table->string('indentifier')->nullable();
@@ -30,10 +30,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('event_indentifications', function (Blueprint $table) {
+        Schema::table('indentifications', function (Blueprint $table) {
             $table->dropForeign(['event_id']);
         });
 
-        Schema::dropIfExists('event_indentifications');
+        Schema::dropIfExists('indentifications');
     }
 };
