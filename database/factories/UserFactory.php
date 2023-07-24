@@ -17,6 +17,8 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+
+
         return [
             'client_id' => 1,
             'name' => fake()->name(),

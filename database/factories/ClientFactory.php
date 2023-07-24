@@ -17,9 +17,8 @@ class ClientFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => 1,
             'name' => fake()->name(),
-            'cpf' => fake()->a->numerify('###########'),
+            'cpf' => fake()->numerify('###########'),
             'cnpj' => fake()->numerify('##############'),
         ];
     }

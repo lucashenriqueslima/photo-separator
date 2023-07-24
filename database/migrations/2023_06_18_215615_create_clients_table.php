@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable()->constrained('users');
             $table->string('name', 100);
             $table->string('cpf', 11)->unique()->nullable();
             $table->string('cnpj', 14)->unique()->nullable();
@@ -26,10 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('clients', function (Blueprint $table) {
-            $table->dropForeign(['user_id']);
-        });
-
         Schema::dropIfExists('clients');
     }
 };

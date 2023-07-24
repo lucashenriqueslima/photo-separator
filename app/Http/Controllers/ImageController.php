@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\FileHelper;
+use App\Helpers\S3Helper;
 use App\Http\Requests\StoreImageRequest;
 use App\Http\Requests\UpdateImageRequest;
 use App\Models\Image;
 use App\Services\S3Service;
+use Illuminate\Support\Facades\Storage;
 
 class ImageController extends Controller
 {
@@ -18,20 +21,13 @@ class ImageController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreImageRequest $request, Image $image, S3Service $s3Service)
+    public function store(StoreImageRequest $request, string $event, Image $image)
     {
-        $requestBody = $request->validated();
 
-        $uploadedFile = $request->file('image');
-
-        if (!$uploadedFile->isValid()) {
-            return response()->json([
-                'message' => 'Arquivo inválido.'
-            ], 400);
-        }
+        $file = FileHelper::base64ToImage($request->image);
 
         try {
-            $s3Service->upload($uploadedFile, 'event-images');
+            S3Helper::upload("teste/{$request->name}", $file);
         } catch (\Exception $e) {
 
             return response()->json([
@@ -39,7 +35,12 @@ class ImageController extends Controller
             ], 500);
         }
 
-        $image->create($requestBody);
+        $image->create(
+            [
+                'event_id' => $event,
+                'name' => $request->name,
+            ]
+        );
 
         return response()->json(201);
     }

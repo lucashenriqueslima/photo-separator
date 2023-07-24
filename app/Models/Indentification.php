@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Scopes\ClientScope;
 
-class Identification extends Model
+class Indentification extends Model
 {
     use HasFactory;
 
@@ -31,6 +31,6 @@ class Identification extends Model
 
     public function identificationImage()
     {
-        return $this->hasOne(IdentificationImage::class);
+        return $this->hasOne(IndentificationImage::class);
     }
 }
