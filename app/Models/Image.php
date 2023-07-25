@@ -23,4 +23,9 @@ class Image extends Model
         'size',
         'price',
     ];
+
+    public function event()
+    {
+        return $this->belongsTo(Event::class);
+    }
 }

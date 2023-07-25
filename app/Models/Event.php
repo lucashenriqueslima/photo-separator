@@ -51,4 +51,9 @@ class Event extends Model
     {
         return $this->belongsTo(EventStatus::class);
     }
+
+    public function images()
+    {
+        return $this->hasMany(Image::class);
+    }
 }

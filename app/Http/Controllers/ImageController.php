@@ -7,6 +7,7 @@ use App\Helpers\S3Helper;
 use App\Http\Requests\StoreImageRequest;
 use App\Http\Requests\UpdateImageRequest;
 use App\Models\Image;
+use App\Services\ImageService;
 use App\Services\S3Service;
 use Illuminate\Support\Facades\Storage;
 
@@ -21,7 +22,7 @@ class ImageController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreImageRequest $request, string $event, Image $image)
+    public function store(StoreImageRequest $request, Image $image, string $event, ImageService $imageService)
     {
 
         $file = FileHelper::base64ToImage($request->image);
@@ -35,14 +36,17 @@ class ImageController extends Controller
             ], 500);
         }
 
-        $image->create(
+        $image = $image->create(
             [
                 'event_id' => $event,
-                'name' => $request->name,
+                'name' => $imageService->getDirNameByEventId($event, $request->name),
+                'status' => Image::STATUS_UPLOADED,
             ]
         );
 
-        return response()->json(201);
+        return response()->json([
+            'data' => $image
+        ], 201);
     }
 
     /**
