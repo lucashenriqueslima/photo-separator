@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\DirHelper;
 use App\Helpers\FileHelper;
 use App\Helpers\S3Helper;
 use App\Http\Requests\StoreImageRequest;
@@ -22,13 +23,15 @@ class ImageController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreImageRequest $request, Image $image, string $event, ImageService $imageService)
+    public function store(StoreImageRequest $request, Image $image, string $event)
     {
 
         $file = FileHelper::base64ToImage($request->image);
 
+        $filePath = DirHelper::getDirNameByEventId($event, $request->name);
+
         try {
-            S3Helper::upload("teste/{$request->name}", $file);
+            S3Helper::upload($filePath, $file);
         } catch (\Exception $e) {
 
             return response()->json([
@@ -39,7 +42,7 @@ class ImageController extends Controller
         $image = $image->create(
             [
                 'event_id' => $event,
-                'name' => $imageService->getDirNameByEventId($event, $request->name),
+                'name' => $filePath,
                 'status' => Image::STATUS_UPLOADED,
             ]
         );

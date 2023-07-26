@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
-            $table->string('image_name')->nullable();
-            $table->string('image_encrypted_name')->nullable();
+            $table->string('image_path')->nullable();
+            $table->string('image_encrypted_path')->nullable();
             $table->string('image_path')->nullable();
             $table->timestamps();
         });

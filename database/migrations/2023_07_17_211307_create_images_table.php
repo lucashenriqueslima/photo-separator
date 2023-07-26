@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+        //TODO: Substitute name for path
         Schema::create('images', function (Blueprint $table) {
             $table->id();
             $table->foreignId('event_id')->constrained();

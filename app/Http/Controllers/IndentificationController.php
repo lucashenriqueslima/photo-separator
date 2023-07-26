@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\DirHelper;
+use App\Helpers\FileHelper;
+use App\Helpers\S3Helper;
 use App\Http\Requests\StoreIndentificationRequest;
 use App\Http\Requests\UpdateIndentificationRequest;
 use App\Models\Indentification;
@@ -19,8 +22,33 @@ class IndentificationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreIndentificationRequest $request)
+    public function store(StoreIndentificationRequest $request, Indentification $indentification, string $event)
     {
+
+        $file = FileHelper::base64ToImage($request->image);
+
+        $filePath = DirHelper::getDirNameByEventId($event, $request->name);
+
+        try {
+            S3Helper::upload($filePath, $file);
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
+        }
+
+        $indentification = $indentification->create(
+            [
+                'event_id' => $event,
+                'name' => $filePath,
+                'status' => "Carregado",
+            ]
+        );
+
+        return response()->json([
+            'data' => $indentification
+        ], 201);
     }
 
     /**
