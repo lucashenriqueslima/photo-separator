@@ -19,10 +19,10 @@ class Indentification extends Model
         'image_path',
     ];
 
-    protected static function booted()
-    {
-        static::addGlobalScope(new ClientScope());
-    }
+    // protected static function booted()
+    // {
+    //     static::addGlobalScope(new ClientScope());
+    // }
 
     public function event()
     {

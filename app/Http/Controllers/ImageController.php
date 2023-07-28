@@ -15,9 +15,11 @@ use Illuminate\Support\Facades\Storage;
 class ImageController extends Controller
 {
 
-    public function index()
+    public function index(Image $image, string $event)
     {
-        //
+        return response()->json([
+            'data' => $image->where('event_id', $event)->get()
+        ], 200);
     }
 
     /**

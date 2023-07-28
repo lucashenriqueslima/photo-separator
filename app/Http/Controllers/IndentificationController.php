@@ -14,9 +14,9 @@ class IndentificationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Indentification $indentification, string $event)
     {
-        //
+        return $indentification->where('event_id', $event)->get();
     }
 
     /**
