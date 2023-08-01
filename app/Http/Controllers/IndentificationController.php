@@ -16,7 +16,9 @@ class IndentificationController extends Controller
      */
     public function index(Indentification $indentification, string $event)
     {
-        return $indentification->where('event_id', $event)->get();
+        return response()->json([
+            'data' => $indentification->where('event_id', $event)->get()
+        ], 200);
     }
 
     /**

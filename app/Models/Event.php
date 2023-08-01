@@ -5,7 +5,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\User;
+use App\Models\Client;
 use App\Models\EventStatus;
 use App\Models\Scopes\ClientScope;
 
@@ -50,6 +50,11 @@ class Event extends Model
     public function eventStatus()
     {
         return $this->belongsTo(EventStatus::class);
+    }
+
+    public function indetifications()
+    {
+        return $this->hasMany(Identification::class);
     }
 
     public function images()

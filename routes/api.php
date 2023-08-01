@@ -25,6 +25,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('events', EventController::class);
 
     Route::prefix('events')->group(function () {
+
+        Route::post('/{event}/compare-faces', [EventController::class, 'compareFaces']);
+
         Route::apiResource('/{event}/identifications', IndentificationController::class);
         Route::apiResource('/{event}/images', ImageController::class);
     });

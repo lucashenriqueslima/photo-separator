@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\EventIndexResource;
 use App\Http\Resources\EventShowResource;
 use App\Models\Event;
+use App\Services\EventService;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Aws\Rekognition\RekognitionClient;
 
 class EventController extends Controller
 {
@@ -55,5 +57,53 @@ class EventController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function compareFaces(Request $request, EventService $service, string $id)
+    {
+        $event = Event::findOrFail($id);
+
+        $client = new RekognitionClient([
+            'region' => env('AWS_DEFAULT_REGION'),
+            'version' => 'latest',
+        ]);
+
+        $indentifications = $event->with('indentifications');
+        $images = $event->with('images');
+
+        $indentifications->each(function ($indentification) use ($client, $event) {
+            
+            $indentificationImage =  [
+                'S3Object' => [
+                    'Bucket' => 'your-s3-bucket-name',
+                    'Name' => $indentification->name,
+                ],
+            ];
+
+            $result = $client->indexFaces([
+                'CollectionId' => $event->id,
+                'Image' => $indentificationImage,
+                'ExternalImageId' => basename($indentification->name), // Use o nome do arquivo como ExternalImageId
+            ]);
+        });
+
+        $images->each(function ($image) use ($client, $event) {
+            
+            $image =  [
+                'S3Object' => [
+                    'Bucket' => 'your-s3-bucket-name',
+                    'Name' => $image->name,
+                ],
+            ];
+
+            $result = $client->searchFacesByImage([
+                'CollectionId' => $event->id,
+                'Image' => $image,
+                'FaceMatchThreshold' => 80,
+            ]);
+
+            dd($result);
+        });
+
     }
 }
