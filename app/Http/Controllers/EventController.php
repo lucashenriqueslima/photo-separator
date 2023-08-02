@@ -61,7 +61,7 @@ class EventController extends Controller
 
     public function compareFaces(Request $request, EventService $service, string $id)
     {
-        $event = Event::findOrFail($id);
+        $event = Event::with('indentifications')->findOrFail($id);
 
         $client = new RekognitionClient([
             'region' => env('AWS_DEFAULT_REGION'),
@@ -70,6 +70,8 @@ class EventController extends Controller
 
         $indentifications = $event->with('indentifications');
         $images = $event->with('images');
+
+        dd($indentifications->toArray());
 
         $indentifications->each(function ($indentification) use ($client, $event) {
             
@@ -83,7 +85,7 @@ class EventController extends Controller
             $result = $client->indexFaces([
                 'CollectionId' => $event->id,
                 'Image' => $indentificationImage,
-                'ExternalImageId' => basename($indentification->name), // Use o nome do arquivo como ExternalImageId
+                'ExternalImageId' => basename($indentification->name),
             ]);
         });
 

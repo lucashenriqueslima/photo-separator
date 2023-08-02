@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Client;
 use App\Models\EventStatus;
+use App\Models\Indentification;
+use App\Models\Image;
 use App\Models\Scopes\ClientScope;
 
 class Event extends Model
@@ -52,9 +54,9 @@ class Event extends Model
         return $this->belongsTo(EventStatus::class);
     }
 
-    public function indetifications()
+    public function indentifications()
     {
-        return $this->hasMany(Identification::class);
+        return $this->hasMany(Indentification::class);
     }
 
     public function images()
