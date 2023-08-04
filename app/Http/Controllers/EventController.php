@@ -61,23 +61,23 @@ class EventController extends Controller
 
     public function compareFaces(Request $request, EventService $service, string $id)
     {
+
+
         $event = Event::with('indentifications', 'images')->findOrFail($id);
 
         $client = new RekognitionClient([
-            'region' => 'us-east-1', // Defina a região da AWS onde seu recurso Rekognition está configurado
+            'region' => 'us-east-1', 
             'version' => 'latest',
-            'credentials' => [
-                'key' => 'YOUR_AWS_ACCESS_KEY', // Substitua pelas suas credenciais da AWS
-                'secret' => 'YOUR_AWS_SECRET_KEY',
-            ],
         ]);
 
-        $images = $event->with('images');
+        $client->createCollection([
+            'CollectionId' => $event->id,
+        ]);
 
-        // dd($event->indentifications->toArray());
+
 
         $event->indentifications->each(function ($indentification) use ($client, $event) {
-            
+
             $indentificationImage =  [
                 'S3Object' => [
                     'Bucket' => env('AWS_BUCKET'),
@@ -92,17 +92,18 @@ class EventController extends Controller
             ]);
         });
 
-        $images->each(function ($image) use ($client, $event) {
+        $event->images->each(function ($image) use ($client, $event) {
+
             
             $image =  [
                 'S3Object' => [
-                    'Bucket' => 'your-s3-bucket-name',
+                    'Bucket' => env('AWS_BUCKET'),
                     'Name' => $image->name,
                 ],
             ];
 
             $result = $client->searchFacesByImage([
-                'CollectionId' => $event->id,
+                'CollectionId' => $event->indentifications->first()->id,
                 'Image' => $image,
                 'FaceMatchThreshold' => 80,
             ]);

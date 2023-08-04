@@ -17,12 +17,12 @@ class DirHelper
         return "{$clientPath}/{$eventPath}/{$entity}/{$fileName}";
     }
 
-    public static function getDirNameByEventId($eventId, $fileName): string
+    public static function getDirNameByEventId($eventId, $fileName, $entity = "imagens"): string
     {
         $clientPath = self::formatDirName(auth()->user()->client_id . '-' . auth()->user()->client->name);
         $eventPath = self::formatDirName($eventId . '-' . Event::find($eventId)->title);
 
-        return "{$clientPath}/{$eventPath}/imagens/{$fileName}";
+        return "{$clientPath}/{$eventPath}/{$entity}/{$fileName}";
     }
 
     public static function formatDirName(string $path): string

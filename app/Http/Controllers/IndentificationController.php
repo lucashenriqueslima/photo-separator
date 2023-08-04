@@ -29,7 +29,7 @@ class IndentificationController extends Controller
 
         $file = FileHelper::base64ToImage($request->image);
 
-        $filePath = DirHelper::getDirNameByEventId($event, $request->name);
+        $filePath = DirHelper::getDirNameByEventId($event, $request->name, "identificacoes");
 
         try {
             S3Helper::upload($filePath, $file);
