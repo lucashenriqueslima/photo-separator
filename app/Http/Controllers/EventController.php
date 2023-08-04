@@ -70,9 +70,9 @@ class EventController extends Controller
             'version' => 'latest',
         ]);
 
-        $client->createCollection([
-            'CollectionId' => $event->id,
-        ]);
+        // $client->createCollection([
+        //     'CollectionId' => (string) $event->id,
+        // ]);
 
 
 
@@ -88,7 +88,7 @@ class EventController extends Controller
             $result = $client->indexFaces([
                 'CollectionId' => (string) $event->id,
                 'Image' => $indentificationImage,
-                'ExternalImageId' => basename($indentification->name),
+                'ExternalImageId' => (string) $indentification->id,
             ]);
         });
 
@@ -103,12 +103,14 @@ class EventController extends Controller
             ];
 
             $result = $client->searchFacesByImage([
-                'CollectionId' => $event->indentifications->first()->id,
+                'CollectionId' => (string) $event->id,
                 'Image' => $image,
                 'FaceMatchThreshold' => 80,
             ]);
 
-            dd($result);
+            $faceMatches = $result->get('FaceMatches');
+
+            
         });
 
     }
