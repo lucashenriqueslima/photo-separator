@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('comparison_combinations', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->foreignId('indentification_id')->constrained();
+            $table->foreignId('image_id')->constrained();
+            $table->integer('similarity')->nullable();
         });
     }
 
