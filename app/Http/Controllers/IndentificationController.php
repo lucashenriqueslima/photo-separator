@@ -32,7 +32,7 @@ class IndentificationController extends Controller
         $filePath = DirHelper::getDirNameByEventId($event, $request->name, "identificacoes");
 
         try {
-            S3Helper::upload($filePath, $file);
+            S3Helper::put($filePath, $file);
         } catch (\Exception $e) {
 
             return response()->json([

@@ -20,6 +20,7 @@ class Image extends Model
         'name',
         'encrypted_name',
         'path',
+        'error_message',
         'size',
         'price',
     ];

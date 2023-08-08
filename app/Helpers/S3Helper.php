@@ -8,7 +8,22 @@ use Illuminate\Support\Facades\Storage;
 class S3Helper
 {
 
-    public static function upload(string $path, string $file): void
+    public static function get(string $path): string
+    {
+        return Storage::disk('s3')->get($path);
+    }
+
+    public static function getCloudObject(string $path): array
+    {
+        return [
+            'S3Object' => [
+                'Bucket' => env('AWS_BUCKET'),
+                'Name' => $path,
+            ],
+        ];
+    }
+
+    public static function put(string $path, string $file): void
     {
         $result = Storage::disk('s3')->put($path, $file, 'public');
 
@@ -16,6 +31,10 @@ class S3Helper
             throw new \Exception('Erro ao fazer upload de arquivo.');
         }
     }
+
+
+
+
 
     public function makeDirectory($path)
     {

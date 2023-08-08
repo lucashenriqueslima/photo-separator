@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\S3Helper;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\EventIndexResource;
 use App\Http\Resources\EventShowResource;
@@ -12,6 +13,8 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Aws\Rekognition\RekognitionClient;
+use Illuminate\Support\Facades\Storage;
+
 
 class EventController extends Controller
 {
@@ -71,24 +74,18 @@ class EventController extends Controller
             'version' => 'latest',
         ]);
 
-        $client->createCollection([
-            'CollectionId' => (string) $event->id,
-        ]);
+        // $client->createCollection([
+        //     'CollectionId' => (string) $event->id,
+        // ]);
 
 
 
         $event->indentifications->each(function ($indentification) use ($client, $event) {
 
-            $indentificationImageS3 =  [
-                'S3Object' => [
-                    'Bucket' => env('AWS_BUCKET'),
-                    'Name' => $indentification->name,
-                ],
-            ];
 
             $result = $client->indexFaces([
                 'CollectionId' => (string) $event->id,
-                'Image' => $indentificationImageS3,
+                'Image' => S3Helper::getCloudObject($indentification->name),
                 'ExternalImageId' => (string) $indentification->id,
             ]);
         });
@@ -97,29 +94,64 @@ class EventController extends Controller
 
         $event->images->each(function ($image) use ($client, $event) {
 
-            $imageFaces = $client->detectFaces([
-                'Image' => [
-                    'S3Object' => [
-                        'Bucket' => env('AWS_BUCKET'),
-                        'Name' => $image->name,
-                    ],
+            $imageData = S3Helper::get($image->name);
+
+            // dd('die');            
+
+            $detectedFaces = $client->detectFaces([
+            'Image' => [
+                    'Bytes' => $imageData,
                 ],
             ]);
 
+            dd($detectedFaces['FaceDetails']);
+
             
-            foreach($imageFaces['FaceDetails'] as $faceDetail) {
-                $faceMatches[] = $client->searchFaces([
+            $imageCloudObject = S3Helper::getCloudObject($image->name);
+
+            
+            foreach($detectedFaces['FaceDetails'] as $detectedFace) {
+
+                dd($detectedFace);
+
+                $boundingBox = $detectedFace['BoundingBox'];
+                $left = intval($boundingBox['Left'] * $detectedFace['ImageWidth']);
+                $top = intval($boundingBox['Top'] * $detectedFace['ImageHeight']);
+                $width = intval($boundingBox['Width'] * $detectedFace['ImageWidth']);
+                $height = intval($boundingBox['Height'] * $detectedFace['ImageHeight']);
+
+                // Extrair a imagem do rosto
+                $faceImage = imagecrop(imagecreatefromstring($imageData), [
+                    'x' => $left,
+                    'y' => $top,
+                    'width' => $width,
+                    'height' => $height,
+                ]);
+
+                // Salvar a imagem do rosto temporariamente
+                $tempImagePath = 'temp_face_image.jpg';
+                
+                Storage::disk('local')->put($tempImagePath, $faceImage);
+
+                // Comparar o rosto com a coleção
+                $result = $client->searchFacesByImage([
                     'CollectionId' => (string) $event->id,
-                    'FaceId' => $faceDetail['FaceId'],
+                    'Image' => [
+                        'Bytes' => Storage::disk('local')->get($tempImagePath),
+                    ],
                     'FaceMatchThreshold' => 80,
                 ]);
+                
+                Storage::disk('local')->delete($tempImagePath);
+                
+                dd($result);
             }
 
-            $result = $client->searchFacesByImage([
-                'CollectionId' => (string) $event->id,
-                'Image' => $imageS3,
-                'FaceMatchThreshold' => 80,
-            ]);
+            // $result = $client->searchFacesByImage([
+            //     'CollectionId' => (string) $event->id,
+            //     'Image' => $imageCloudObject,
+            //     'FaceMatchThreshold' => 80,
+            // ]);
 
             
 

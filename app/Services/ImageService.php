@@ -36,7 +36,7 @@ class ImageService
         $file = FileHelper::base64ToImage($request->image);
 
         try {
-            S3Helper::upload("teste/{$request->name}", $file);
+            S3Helper::put("teste/{$request->name}", $file);
         } catch (\Exception $e) {
 
             return response()->json([
