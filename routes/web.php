@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Livewire\Counter;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -20,4 +22,7 @@ Route::get('/', function () {
 Route::get('/teste', function () {
     echo "asd";
 });
+
+ 
+Route::get('/counter', Counter::class);
 
