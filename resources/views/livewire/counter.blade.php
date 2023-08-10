@@ -5,5 +5,5 @@
 
     <button wire:click="decrement">-</button>
 
-    <p class=""> teste </p>
+    <p class="text-bold"> teste </p>
 </div>

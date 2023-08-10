@@ -1,8 +1,8 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
+use App\Livewire\Auth\Login;
 use Illuminate\Support\Facades\Route;
-use App\Livewire\Counter;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -19,10 +19,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/teste', function () {
-    echo "asd";
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
- 
-Route::get('/counter', Counter::class);
+Route::get('/entrar', Login::class)->name('login');
 
+require __DIR__.'/auth.php';
