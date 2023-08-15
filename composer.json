@@ -15,7 +15,8 @@
         "league/flysystem-aws-s3-v3": "^3.0",
         "livewire/livewire": "^3.0@beta",
         "nesbot/carbon": "*",
-        "spatie/laravel-query-builder": "^5.2"
+        "spatie/laravel-query-builder": "^5.2",
+        "wire-elements/modal": "^2.0@beta"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
