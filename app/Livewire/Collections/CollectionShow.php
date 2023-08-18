@@ -23,6 +23,11 @@ class CollectionShow extends Component
 
     }
 
+    public function teste() 
+    {
+        dd('teste');
+    }
+
     public function render()
     {
         return view('livewire.collections.collection-show', [

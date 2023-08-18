@@ -13,7 +13,7 @@
             </div>
             <form wire:submit="save" enctype="multipart/form-data">
                 @csrf
-                <input wire:model="photos" id="dropzone-file" type="file" class="hidden"  multiple>
+                <input @change="$wire" id="dropzone-file" type="file" class="hidden"  multiple>
             </form>
         </label>
     </div> 
